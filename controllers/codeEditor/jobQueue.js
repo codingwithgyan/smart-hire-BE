@@ -1,7 +1,8 @@
 const Queue = require("bull");
 const Job = require("../../models/job.model");
 const runPythonFile = require("./ExecutePython");
-
+require("dotenv").config();
+console.log("===================process.env", process.env);
 const redisConfig = {
   host: process.env.REDIS_HOST || "localhost",
   port: process.env.REDIS_PORT || "6379",
