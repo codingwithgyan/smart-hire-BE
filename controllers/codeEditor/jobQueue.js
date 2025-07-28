@@ -12,7 +12,7 @@ const jobQueue = new Queue("job-queue", redisConfig);
 const { JOB_STATUS, LANGUAGE_SUPPORT } = require("../../constants/index");
 const { PENDING, SUCCESS, ERROR } = JOB_STATUS;
 const { JAVASCRIPT, PYTHON } = LANGUAGE_SUPPORT;
-const TOTAL_WORKERS = 4;
+const TOTAL_WORKERS = 8;
 
 jobQueue.process(TOTAL_WORKERS, async ({ data }) => {
   const { jobId } = data;
@@ -32,6 +32,27 @@ jobQueue.process(TOTAL_WORKERS, async ({ data }) => {
 
   await job.save();
   return true;
+});
+
+// // Add event listeners
+jobQueue.on("waiting", (jobId) => {
+  console.log(`Job ${jobId} is waiting`);
+});
+
+jobQueue.on("active", (job) => {
+  console.log(`Job ${job.id} is now active`);
+});
+
+jobQueue.on("completed", (job, result) => {
+  console.log(`Job ${job.id} completed with result ${result}`);
+});
+
+jobQueue.on("failed", (job, err) => {
+  console.log(`Job ${job.id} failed with error ${err}`);
+});
+
+jobQueue.on("error", (error) => {
+  console.error("Queue error:", error);
 });
 
 const addJobToQueue = async (jobId) => {
