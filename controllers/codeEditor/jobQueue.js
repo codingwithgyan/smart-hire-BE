@@ -4,6 +4,7 @@ const runPythonFile = require("./ExecutePython");
 require("dotenv").config();
 const redisConfig = {
   host: process.env.REDIS_HOST || "localhost",
+  url: process.env.REDIS_HOST || "localhost",
 };
 console.log("===================redisConfig", redisConfig);
 
