@@ -3,9 +3,7 @@ const Job = require("../../models/job.model");
 const runPythonFile = require("./ExecutePython");
 
 const redisConfig = {
-  host:
-    process.env.REDIS_HOST ||
-    "https://next-js-redis-session-store-template-d11bd8nc9-smart-hire.vercel.app/",
+  host: process.env.REDIS_HOST || "localhost",
   port: process.env.REDIS_PORT || "6379",
   password: process.env.REDIS_PASSWORD || "123456",
 };
