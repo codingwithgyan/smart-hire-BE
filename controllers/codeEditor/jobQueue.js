@@ -2,12 +2,10 @@ const Queue = require("bull");
 const Job = require("../../models/job.model");
 const runPythonFile = require("./ExecutePython");
 require("dotenv").config();
-console.log("===================process.env", process.env);
 const redisConfig = {
   host: process.env.REDIS_HOST || "localhost",
-  port: process.env.REDIS_PORT || "6379",
-  password: process.env.REDIS_PASSWORD || "123456",
 };
+console.log("===================redisConfig", redisConfig);
 
 const jobQueue = new Queue("job-queue", redisConfig);
 const { JOB_STATUS, LANGUAGE_SUPPORT } = require("../../constants/index");
