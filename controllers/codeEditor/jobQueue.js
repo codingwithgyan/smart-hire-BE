@@ -3,9 +3,9 @@ const Job = require("../../models/job.model");
 const runPythonFile = require("./ExecutePython");
 
 const redisConfig = {
-  host: process.env.REDIS_HOST || "localhost",
-  port: process.env.REDIS_PORT || 6379,
-  password: process.env.REDIS_PASSWORD || "123456",
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+  password: process.env.REDIS_PASSWORD,
 };
 
 const jobQueue = new Queue("job-queue", redisConfig);
