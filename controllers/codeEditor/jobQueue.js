@@ -1,6 +1,7 @@
 const Queue = require("bull");
 const Job = require("../../models/job.model");
 const runPythonFile = require("./ExecutePython");
+const runJavascriptFile = require("./ExecuteJavaScript");
 require("dotenv").config();
 
 const redisConfig = {
@@ -19,12 +20,16 @@ const { JAVASCRIPT, PYTHON } = LANGUAGE_SUPPORT;
 const TOTAL_WORKERS = 8;
 
 jobQueue.process(TOTAL_WORKERS, async ({ data }) => {
-  const { jobId } = data;
+  const { jobId, lang } = data;
   const job = await Job.findById(jobId);
-
+  let codeResponse;
   try {
     job.startedAt = new Date();
-    const codeResponse = await runPythonFile(job.filePath, job.lang);
+    if (lang) {
+      codeResponse = await runJavascriptFile(job.filePath, job.lang);
+    } else if (lang === "py") {
+      codeResponse = await runPythonFile(job.filePath, job.lang);
+    }
     job.completedAt = new Date();
     job.status = SUCCESS;
     job.output = codeResponse;
@@ -59,12 +64,12 @@ jobQueue.on("error", (error) => {
   console.error("Queue error:", error);
 });
 
-const addJobToQueue = async (jobId) => {
+const addJobToQueue = async (jobId, lang) => {
   try {
     if (jobQueue.hasOwnProperty("jobId")) {
       jobQueue["jobId"] = "";
     }
-    await jobQueue.add({ jobId });
+    await jobQueue.add({ jobId, lang });
   } catch (error) {
     throw new Error("Failed to add job to queue");
   }

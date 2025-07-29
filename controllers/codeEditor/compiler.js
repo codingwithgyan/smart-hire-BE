@@ -24,7 +24,7 @@ const createCodeFile = async (req, res) => {
 
     job = await new Job({ language: lang, filePath: filePath }).save();
     const job_id = job?._id;
-    addJobToQueue(job_id);
+    addJobToQueue(job_id, lang);
     res.status(200).json({ success: true, job_id });
   } catch (error) {
     return res
