@@ -10,10 +10,9 @@ const redisConfig = {
   password: process.env.REDIS_PASSWORD || "123456",
 };
 
-console.log("===================process.env", process.env);
-console.log("===================redisConfig", redisConfig);
+const redisURI = process.env.REDIS_ULI;
 
-const jobQueue = new Queue("job-queue", redisConfig);
+const jobQueue = new Queue("job-queue", redisURI);
 const { JOB_STATUS, LANGUAGE_SUPPORT } = require("../../constants/index");
 const { PENDING, SUCCESS, ERROR } = JOB_STATUS;
 const { JAVASCRIPT, PYTHON } = LANGUAGE_SUPPORT;
