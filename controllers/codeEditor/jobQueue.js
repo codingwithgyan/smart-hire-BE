@@ -25,11 +25,12 @@ jobQueue.process(TOTAL_WORKERS, async ({ data }) => {
   let codeResponse;
   try {
     job.startedAt = new Date();
-    if (lang) {
+    if (lang === "js") {
       codeResponse = await runJavascriptFile(job.filePath, job.lang);
     } else if (lang === "py") {
       codeResponse = await runPythonFile(job.filePath, job.lang);
     }
+
     job.completedAt = new Date();
     job.status = SUCCESS;
     job.output = codeResponse;
