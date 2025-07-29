@@ -2,10 +2,15 @@ const Queue = require("bull");
 const Job = require("../../models/job.model");
 const runPythonFile = require("./ExecutePython");
 require("dotenv").config();
+
 const redisConfig = {
   host: process.env.REDIS_HOST || "localhost",
-  url: process.env.REDIS_HOST || "localhost",
+  port: process.env.REDIS_PORT || "6379",
+  username: REDIS_USERNAME,
+  password: process.env.REDIS_PASSWORD || "123456",
 };
+
+console.log("===================process.env", process.env);
 console.log("===================redisConfig", redisConfig);
 
 const jobQueue = new Queue("job-queue", redisConfig);
